@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.ActionBar
 import java.util.ArrayDeque
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private var kbd: Keyboard? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.hide()
         setContentView(R.layout.activity_main)
         val editText1 = findViewById<EditText>(R.id.editText1)
         val editText2 = findViewById<EditText>(R.id.editText2)
