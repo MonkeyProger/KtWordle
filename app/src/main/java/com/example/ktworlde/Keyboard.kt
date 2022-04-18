@@ -1,7 +1,6 @@
 package com.example.ktworlde
 
 import android.content.Context
-import android.os.CountDownTimer
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.SparseArray
@@ -51,9 +50,13 @@ class Keyboard @JvmOverloads constructor(
     private var button_б: Button? = null
     private var button_ю: Button? = null
     private var button_del: Button? = null
-    private var button_ввод: Button? = null
+    var button_ввод: Button? = null
     private val keyValues = SparseArray<String>()
     private var inputConnection: InputConnection? = null
+    private var deque = ArrayDeque<InputConnection>()
+    private var analyzer: WordAnalyzer? = null
+    var step = 1
+
     init {
         init(context)
     }
@@ -139,13 +142,28 @@ class Keyboard @JvmOverloads constructor(
         keyValues.put(R.id.button_ж, "Ж"); keyValues.put(R.id.button_э, "Э"); keyValues.put(R.id.button_я, "Я")
         keyValues.put(R.id.button_ч, "Ч"); keyValues.put(R.id.button_с, "С"); keyValues.put(R.id.button_м, "М")
         keyValues.put(R.id.button_и, "И"); keyValues.put(R.id.button_т, "Т"); keyValues.put(R.id.button_ь, "Ь")
-        keyValues.put(R.id.button_ъ, "Ъ"); keyValues.put(R.id.button_б, "Б"); keyValues.put(R.id.button_ввод, "\n")
+        keyValues.put(R.id.button_ъ, "Ъ"); keyValues.put(R.id.button_б, "Б");
+    }
+
+    fun enterHandler(){
+        if (inputConnection!!.getTextBeforeCursor(5,0)!!.length == 5)
+            if (deque.isNotEmpty()) {
+                step++
+                inputConnection = deque.pop()
+            }
     }
 
     override fun onClick(view: View) {
         if (inputConnection == null) return
+        val selectedText = inputConnection!!.getSelectedText(0)
+        /*if (view.id == R.id.button_ввод){
+            if (inputConnection!!.getTextBeforeCursor(5,0)!!.length == 5)
+                if (deque.isNotEmpty()) {
+                    step++
+                    inputConnection = deque.pop()
+                }
+        }*/
         if (view.id == R.id.button_del) {
-            val selectedText = inputConnection!!.getSelectedText(0)
             if (TextUtils.isEmpty(selectedText)) {
                 inputConnection!!.deleteSurroundingText(1, 0)
             } else {
@@ -156,8 +174,16 @@ class Keyboard @JvmOverloads constructor(
             inputConnection!!.commitText(value, 1)
         }
     }
-    fun setInputConnection(ic: InputConnection?) {
-        inputConnection = ic
+    fun setInputConnection(ic1: InputConnection?,ic2: InputConnection?,
+    ic3: InputConnection?, ic4: InputConnection?, ic5: InputConnection?) {
+        inputConnection = ic1
+        deque.push(ic5)
+        deque.push(ic4)
+        deque.push(ic3)
+        deque.push(ic2)
+    }
+    fun setAnalyzerConnection(it: WordAnalyzer?){
+        analyzer = it
     }
 
     private var millis: Long = 0L

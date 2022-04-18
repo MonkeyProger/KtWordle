@@ -7,18 +7,137 @@
     tools:context="com.example.ktworlde.MainActivity">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
         android:background="#FFEB00"
-        android:maxLength="6"
+        android:focusable="false"
+        android:gravity="center"
+        android:inputType="text"
+        android:maxLength="5"
+        android:minHeight="48dp"
+        android:padding="5dp"
+        android:textIsSelectable="false" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText1"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
+        android:background="#FFEB00"
+        android:maxLength="5"
+        android:gravity="center"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:inputType="text"
         android:minHeight="48dp"
         android:padding="5dp" />
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText2"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
+        android:background="#FFEB00"
+        android:maxLength="5"
+        android:gravity="center"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="5dp" />
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText3"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
+        android:background="#FFEB00"
+        android:maxLength="5"
+        android:gravity="center"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="5dp" />
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText4"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
+        android:background="#FFEB00"
+        android:maxLength="5"
+        android:gravity="center"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="5dp" />
+
+    <com.example.ktworlde.Textbar
+        android:id="@+id/textbar1"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="52dp"
+        android:layout_alignStart="@id/editText1"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <com.example.ktworlde.Textbar
+        android:id="@+id/textbar2"
+        android:gravity="center"
+        android:layout_alignTop="@+id/editText1"
+        android:layout_marginTop="50dp"
+        android:layout_alignStart="@id/editText2"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <com.example.ktworlde.Textbar
+        android:id="@+id/textbar3"
+        android:gravity="center"
+        android:layout_alignTop="@+id/editText2"
+        android:layout_marginTop="50dp"
+        android:layout_alignStart="@id/editText3"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <com.example.ktworlde.Textbar
+        android:id="@+id/textbar4"
+        android:gravity="center"
+        android:layout_alignTop="@+id/editText3"
+        android:layout_marginTop="50dp"
+        android:layout_alignStart="@id/editText4"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <com.example.ktworlde.Textbar
+        android:id="@+id/textbar5"
+        android:gravity="center"
+        android:layout_alignTop="@+id/editText4"
+        android:layout_marginTop="50dp"
+        android:layout_alignStart="@id/editText5"
+        android:layout_marginStart="128dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 
     <com.example.ktworlde.Keyboard
         android:id="@+id/keyboard"
@@ -27,16 +146,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:orientation="vertical" />
-
-    <com.example.ktworlde.TextBar
-        android:id="@+id/textBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="150dp"/>
-
-
-
 
 
 
