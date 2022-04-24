@@ -1,11 +1,19 @@
 package com.example.ktworlde
 
 import java.io.File
+import java.io.InputStream
+import java.io.InputStreamReader
+import kotlin.random.Random
 
-class WordAnalyzer {
-    //private val key: String = File("src/main/res/words.txt").readLines().random()
-    private val key = "ответ"
+class WordAnalyzer(inputStream: InputStream) {
+    private val words: List<String> = InputStreamReader(inputStream).readLines()
+    private var key = "ответ"
     private var map = mutableMapOf<Int,IntArray>()
+
+    fun clearAnalyzer(){
+        map.clear()
+        key = words[Random.nextInt(words.size)]
+    }
 
     fun analyzeWord(word: String, num: Int): IntArray {
         val letterMap = createLetterMap().toMutableMap()

@@ -54,8 +54,6 @@ class Keyboard @JvmOverloads constructor(
     private val keyValues = SparseArray<String>()
     private var inputConnection: InputConnection? = null
     private var deque = ArrayDeque<InputConnection>()
-    private var analyzer: WordAnalyzer? = null
-    var step = 1
 
     init {
         init(context)
@@ -146,23 +144,13 @@ class Keyboard @JvmOverloads constructor(
     }
 
     fun enterHandler(){
-        if (inputConnection!!.getTextBeforeCursor(5,0)!!.length == 5)
-            if (deque.isNotEmpty()) {
-                step++
-                inputConnection = deque.pop()
-            }
+        if (inputConnection != null && inputConnection!!.getTextBeforeCursor(5,0)!!.length == 5 &&
+            deque.isNotEmpty()) inputConnection = deque.pop()
     }
 
     override fun onClick(view: View) {
         if (inputConnection == null) return
         val selectedText = inputConnection!!.getSelectedText(0)
-        /*if (view.id == R.id.button_ввод){
-            if (inputConnection!!.getTextBeforeCursor(5,0)!!.length == 5)
-                if (deque.isNotEmpty()) {
-                    step++
-                    inputConnection = deque.pop()
-                }
-        }*/
         if (view.id == R.id.button_del) {
             if (TextUtils.isEmpty(selectedText)) {
                 inputConnection!!.deleteSurroundingText(1, 0)
@@ -174,16 +162,20 @@ class Keyboard @JvmOverloads constructor(
             inputConnection!!.commitText(value, 1)
         }
     }
+
     fun setInputConnection(ic1: InputConnection?,ic2: InputConnection?,
     ic3: InputConnection?, ic4: InputConnection?, ic5: InputConnection?) {
+        deque.clear()
         inputConnection = ic1
         deque.push(ic5)
         deque.push(ic4)
         deque.push(ic3)
         deque.push(ic2)
     }
-    fun setAnalyzerConnection(it: WordAnalyzer?){
-        analyzer = it
+
+    fun clearInputConnection(){
+        deque.clear()
+        inputConnection = null
     }
 
     private var millis: Long = 0L

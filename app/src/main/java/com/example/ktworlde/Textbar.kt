@@ -28,10 +28,9 @@ class Textbar @JvmOverloads constructor(
         let3 = findViewById<View>(R.id.letter3) as TextView
         let4 = findViewById<View>(R.id.letter4) as TextView
         let5 = findViewById<View>(R.id.letter5) as TextView
-        deque.addFirst(let5!!); deque.addFirst(let4!!)
-        deque.addFirst(let3!!); deque.addFirst(let2!!)
-        deque.addFirst(let1!!)
+        restart()
     }
+
     fun showResult(arr: IntArray,word: String){
         for (i in 0..4){
             val el = deque.first()
@@ -44,5 +43,19 @@ class Textbar @JvmOverloads constructor(
             deque.removeFirst()
         }
         this.visibility = View.VISIBLE
+    }
+
+    fun restart(){
+        deque.clear()
+        let1?.text = ""; let2?.text = ""; let3?.text = ""
+        let4?.text = ""; let5?.text = ""
+        let1?.setBackgroundColor(Color.argb(255,200,200,200))
+        let2?.setBackgroundColor(Color.argb(255,200,200,200))
+        let3?.setBackgroundColor(Color.argb(255,200,200,200))
+        let4?.setBackgroundColor(Color.argb(255,200,200,200))
+        let5?.setBackgroundColor(Color.argb(255,200,200,200))
+        deque.addFirst(let5!!); deque.addFirst(let4!!)
+        deque.addFirst(let3!!); deque.addFirst(let2!!)
+        deque.addFirst(let1!!)
     }
 }

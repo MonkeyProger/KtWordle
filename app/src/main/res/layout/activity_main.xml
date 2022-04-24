@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="282dp"
         android:background="#FFEB00"
@@ -92,7 +92,7 @@
         android:id="@+id/textbar1"
         android:gravity="center"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="10dp"
         android:layout_alignStart="@id/editText1"
         android:layout_marginStart="128dp"
         android:layout_marginEnd="5dp"
@@ -144,9 +144,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical" />
 
+    <ImageButton
+        android:id="@+id/restart"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@+id/keyboard"
+        android:layout_marginBottom="0dp"
+        app:srcCompat="@android:drawable/ic_menu_rotate" />
 
 
 </RelativeLayout>
