@@ -118,26 +118,28 @@
         android:layout_marginEnd="5dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
+
     <com.example.ktworlde.Textbar
         android:id="@+id/textbar4"
-        android:gravity="center"
-        android:layout_alignTop="@+id/editText3"
-        android:layout_marginTop="50dp"
-        android:layout_alignStart="@id/editText4"
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="5dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:layout_alignStart="@id/editText4"
+        android:layout_alignTop="@+id/editText3"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center" />
+
     <com.example.ktworlde.Textbar
         android:id="@+id/textbar5"
-        android:gravity="center"
-        android:layout_alignTop="@+id/editText4"
-        android:layout_marginTop="50dp"
-        android:layout_alignStart="@id/editText5"
-        android:layout_marginStart="128dp"
-        android:layout_marginEnd="5dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:layout_alignStart="@id/editText5"
+        android:layout_alignTop="@+id/editText4"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center" />
 
     <com.example.ktworlde.Keyboard
         android:id="@+id/keyboard"
@@ -155,5 +157,32 @@
         android:layout_marginBottom="0dp"
         app:srcCompat="@android:drawable/ic_menu_rotate" />
 
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editText5"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="282dp"
+        android:background="#4CAF50"
+        android:maxLength="5"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:focusable="false"
+        android:textIsSelectable="false"
+        android:minHeight="48dp"
+        android:padding="5dp"
+        />
+
+    <com.example.ktworlde.Topbar
+        android:id="@+id/topbar"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="200dp"
+        android:orientation="vertical"
+        />
 
 </RelativeLayout>

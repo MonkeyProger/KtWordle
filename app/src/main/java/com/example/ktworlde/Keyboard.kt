@@ -22,6 +22,7 @@ class Keyboard @JvmOverloads constructor(
     private var button_у: Button? = null
     private var button_к: Button? = null
     private var button_е: Button? = null
+    private var button_ё: Button? = null
     private var button_н: Button? = null
     private var button_г: Button? = null
     private var button_ш: Button? = null
@@ -65,6 +66,7 @@ class Keyboard @JvmOverloads constructor(
         button_у = findViewById<View>(R.id.button_у) as Button
         button_к = findViewById<View>(R.id.button_к) as Button
         button_е = findViewById<View>(R.id.button_е) as Button
+        button_ё = findViewById<View>(R.id.button_ё) as Button
         button_н = findViewById<View>(R.id.button_н) as Button
         button_г = findViewById<View>(R.id.button_г) as Button
         button_ш = findViewById<View>(R.id.button_ш) as Button
@@ -99,7 +101,6 @@ class Keyboard @JvmOverloads constructor(
         button_ц!!.setOnClickListener(this)
         button_у!!.setOnClickListener(this)
         button_к!!.setOnClickListener(this)
-        button_е!!.setOnClickListener(this)
         button_н!!.setOnClickListener(this)
         button_г!!.setOnClickListener(this)
         button_ш!!.setOnClickListener(this)
@@ -129,6 +130,7 @@ class Keyboard @JvmOverloads constructor(
         button_ввод!!.setOnClickListener(this)
 
         button_ь!!.setOnTouchListener(this)
+        button_е!!.setOnTouchListener(this)
 
         keyValues.put(R.id.button_й, "Й"); keyValues.put(R.id.button_ц, "Ц"); keyValues.put(R.id.button_у, "У")
         keyValues.put(R.id.button_к, "К"); keyValues.put(R.id.button_е, "Е"); keyValues.put(R.id.button_н, "Н")
@@ -140,7 +142,7 @@ class Keyboard @JvmOverloads constructor(
         keyValues.put(R.id.button_ж, "Ж"); keyValues.put(R.id.button_э, "Э"); keyValues.put(R.id.button_я, "Я")
         keyValues.put(R.id.button_ч, "Ч"); keyValues.put(R.id.button_с, "С"); keyValues.put(R.id.button_м, "М")
         keyValues.put(R.id.button_и, "И"); keyValues.put(R.id.button_т, "Т"); keyValues.put(R.id.button_ь, "Ь")
-        keyValues.put(R.id.button_ъ, "Ъ"); keyValues.put(R.id.button_б, "Б");
+        keyValues.put(R.id.button_ъ, "Ъ"); keyValues.put(R.id.button_б, "Б"); keyValues.put(R.id.button_ё, "Ё")
     }
 
     fun enterHandler(){
@@ -199,6 +201,29 @@ class Keyboard @JvmOverloads constructor(
                     if (moveFlag && e.eventTime - millis >= 300)
                         value = keyValues[R.id.button_ъ, "Ъ"]
                     button_ъ!!.visibility = GONE
+                    inputConnection!!.commitText(value, 1)
+                    millis = 0L
+                    moveFlag = false
+                    startFlag = false
+                }
+            }
+        } else
+        if (view.id == R.id.button_е) {
+            var value = keyValues[R.id.button_е, "Е"]
+            when(e.action){
+                MotionEvent.ACTION_DOWN -> if (!startFlag){
+                    startFlag = true
+                    millis = e.eventTime
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    if (!moveFlag) moveFlag = true
+                    else if (e.eventTime - millis >= 300)
+                        button_ё!!.visibility = VISIBLE
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (moveFlag && e.eventTime - millis >= 300)
+                        value = keyValues[R.id.button_ё, "Ё"]
+                    button_ё!!.visibility = GONE
                     inputConnection!!.commitText(value, 1)
                     millis = 0L
                     moveFlag = false

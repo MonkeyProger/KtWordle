@@ -352,5 +352,18 @@
             android:translationY="45dp"
             android:visibility="gone"
             />
+        <Button
+            android:id="@+id/button_ё"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="37.5dp"
+            android:layout_height="45dp"
+            android:backgroundTint="#FFEB00"
+            android:clickable="false"
+            android:text="Ё"
+            android:textSize="20sp"
+            android:translationX="150.5dp"
+            android:translationY="35dp"
+            android:visibility="gone"
+            />
     </FrameLayout>
 </merge>

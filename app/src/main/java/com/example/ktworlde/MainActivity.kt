@@ -8,6 +8,7 @@ import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import java.util.ArrayDeque
 
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private var editText3: EditText? = null
     private var editText4: EditText? = null
     private var editText5: EditText? = null
+    private var answerText: TextView? = null
     private var tb1: Textbar? = null
     private var tb2: Textbar? = null
     private var tb3: Textbar? = null
@@ -36,11 +38,13 @@ class MainActivity : AppCompatActivity() {
     private var ic3: InputConnection? = null
     private var ic4: InputConnection? = null
     private var ic5: InputConnection? = null
+    private var top: Topbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val inputStream = assets.open("singular.txt")
-        analyzer = WordAnalyzer(inputStream)
+        val words = assets.open("singular.txt")
+        val probWords = assets.open("res.txt")
+        analyzer = WordAnalyzer(words,probWords)
         // Hiding upper actionbar
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
@@ -52,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         editText3 = findViewById(R.id.editText3)
         editText4 = findViewById(R.id.editText4)
         editText5 = findViewById(R.id.editText5)
+        answerText = findViewById(R.id.answer)
         tb1 = findViewById(R.id.textbar1)
         tb2 = findViewById(R.id.textbar2)
         tb3 = findViewById(R.id.textbar3)
@@ -62,6 +67,9 @@ class MainActivity : AppCompatActivity() {
         val keyboard = findViewById<Keyboard>(R.id.keyboard)
         enter = keyboard.button_ввод
         restart = findViewById(R.id.restart)
+
+        // Setting topbar
+        top = findViewById(R.id.topbar)
 
         // Disabling writing with systemKeyboard
         editText1!!.showSoftInputOnFocus = false
@@ -78,13 +86,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNew(){
+        answerText!!.text = ""
         winFlag = false
         dequeIc.clear()
         dequeTb.clear()
+        top!!.clear()
         analyzer!!.clearAnalyzer()
         counter = 1
         editText1!!.text.clear(); editText2!!.text.clear(); editText3!!.text.clear()
-        editText4!!.text.clear(); editText5!!.text.clear();
+        editText4!!.text.clear(); editText5!!.text.clear()
         tb1!!.restart(); tb2!!.restart(); tb3!!.restart()
         tb4!!.restart(); tb5!!.restart()
         ic1 = editText1!!.onCreateInputConnection(EditorInfo())
@@ -105,7 +115,8 @@ class MainActivity : AppCompatActivity() {
                 if (dequeIc.isEmpty()) return
                 if (dequeIc.first!!.getTextBeforeCursor(5,0)!!.length == 5) {
                     val word = dequeIc.first!!.getTextBeforeCursor(5,0).toString().lowercase()
-                    val arr: IntArray = analyzer!!.analyzeWord(word,counter)
+                    if (!analyzer!!.contains(word)) return
+                    val arr: IntArray = analyzer!!.analyzeWord(word)
                     counter++
                     dequeIc.pop()
                     dequeTb.first.showResult(arr,word)
@@ -115,16 +126,14 @@ class MainActivity : AppCompatActivity() {
                         // Win
                         // GreenScreen
                         winFlag = true
+                        answerText!!.text = analyzer!!.key
                         kbd!!.clearInputConnection()
-                    } else {
-                        // NextStep
-                    }
+                    } else if (dequeIc.isEmpty()) {
+                            //Lose
+                            answerText!!.text = analyzer!!.key
+                            kbd!!.clearInputConnection()
+                        } else top!!.set(analyzer!!.analyzeEntropy(word)[0])
                     kbd!!.enterHandler()
-                }
-                if (dequeIc.isEmpty()) {
-                    //Lose
-                    kbd!!.clearInputConnection()
-                    return
                 }
             }
             if (view?.id == R.id.restart)
