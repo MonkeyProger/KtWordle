@@ -38,7 +38,11 @@ class MainActivity : AppCompatActivity() {
     private var ic3: InputConnection? = null
     private var ic4: InputConnection? = null
     private var ic5: InputConnection? = null
-    private var top: Topbar? = null
+    private var top1: Topbar? = null
+    private var top2: Topbar? = null
+    private var top3: Topbar? = null
+    private var top4: Topbar? = null
+    private var top5: Topbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +73,11 @@ class MainActivity : AppCompatActivity() {
         restart = findViewById(R.id.restart)
 
         // Setting topbar
-        top = findViewById(R.id.topbar)
+        top1 = findViewById(R.id.topbar1)
+        top2 = findViewById(R.id.topbar2)
+        top3 = findViewById(R.id.topbar3)
+        top4 = findViewById(R.id.topbar4)
+        top5 = findViewById(R.id.topbar5)
 
         // Disabling writing with systemKeyboard
         editText1!!.showSoftInputOnFocus = false
@@ -90,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         winFlag = false
         dequeIc.clear()
         dequeTb.clear()
-        top!!.clear()
+        top1!!.clear(); top2!!.clear(); top3!!.clear(); top4!!.clear(); top5!!.clear()
         analyzer!!.clearAnalyzer()
         counter = 1
         editText1!!.text.clear(); editText2!!.text.clear(); editText3!!.text.clear()
@@ -132,7 +140,14 @@ class MainActivity : AppCompatActivity() {
                             //Lose
                             answerText!!.text = analyzer!!.key
                             kbd!!.clearInputConnection()
-                        } else top!!.set(analyzer!!.analyzeEntropy(word)[0])
+                        } else {
+                            val res = analyzer!!.analyzeEntropy(word)
+                        top1!!.set(res[0])
+                        top2!!.set(res[1])
+                        top3!!.set(res[2])
+                        top4!!.set(res[3])
+                        top5!!.set(res[4])
+                    }
                     kbd!!.enterHandler()
                 }
             }
