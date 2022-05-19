@@ -16,11 +16,13 @@ class MainActivity : AppCompatActivity() {
     private var analyzer: WordAnalyzer? = null
     private var enter: Button? = null
     private var restart: ImageButton? = null
+    private var fstGuessButton: ImageButton? = null
     private var counter = 1
     private var dequeIc = ArrayDeque<InputConnection>()
     private var dequeTb = ArrayDeque<Textbar>()
     private var kbd: Keyboard? = null
     private var winFlag = false
+    private var fullGuess = true
 
     private var editText1: EditText? = null
     private var editText2: EditText? = null
@@ -49,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         val words = assets.open("singular.txt")
         val probWords = assets.open("res.txt")
         analyzer = WordAnalyzer(words,probWords)
+        probWords.close()
+        words.close()
         // Hiding upper actionbar
         val actionBar: ActionBar? = supportActionBar
         actionBar?.hide()
@@ -71,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         val keyboard = findViewById<Keyboard>(R.id.keyboard)
         enter = keyboard.button_ввод
         restart = findViewById(R.id.restart)
+        fstGuessButton = findViewById(R.id.fstguess)
 
         // Setting topbar
         top1 = findViewById(R.id.topbar1)
@@ -89,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         // Final steps
         enter?.setOnClickListener(Click())
         restart?.setOnClickListener(Click())
+        fstGuessButton?.setOnClickListener(Click())
         kbd = keyboard
         setupNew()
     }
@@ -96,6 +102,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupNew(){
         answerText!!.text = ""
         winFlag = false
+        fullGuess = true
         dequeIc.clear()
         dequeTb.clear()
         top1!!.clear(); top2!!.clear(); top3!!.clear(); top4!!.clear(); top5!!.clear()
@@ -142,17 +149,27 @@ class MainActivity : AppCompatActivity() {
                             kbd!!.clearInputConnection()
                         } else {
                             val res = analyzer!!.analyzeEntropy(word)
-                        top1!!.set(res[0])
-                        top2!!.set(res[1])
-                        top3!!.set(res[2])
-                        top4!!.set(res[3])
-                        top5!!.set(res[4])
+                            top1!!.set(res[0])
+                            top2!!.set(res[1])
+                            top3!!.set(res[2])
+                            top4!!.set(res[3])
+                            top5!!.set(res[4])
                     }
                     kbd!!.enterHandler()
                 }
             }
             if (view?.id == R.id.restart)
                 if (dequeIc.isEmpty() || winFlag) setupNew()
+            if (view?.id == R.id.fstguess)
+                if (dequeIc.size == 5 && fullGuess){
+                    fullGuess = false
+                    val res = analyzer!!.analyzeFullEntropy()
+                    top1!!.set(res[0])
+                    top2!!.set(res[1])
+                    top3!!.set(res[2])
+                    top4!!.set(res[3])
+                    top5!!.set(res[4])
+                }
         }
     }
 

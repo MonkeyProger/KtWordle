@@ -167,6 +167,15 @@
         android:layout_marginBottom="0dp"
         app:srcCompat="@android:drawable/ic_menu_rotate" />
 
+    <ImageButton
+        android:id="@+id/fstguess"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/keyboard"
+        android:layout_alignBottom="@+id/keyboard"
+        android:layout_marginBottom="0dp"
+        android:src="@android:drawable/ic_menu_info_details" />
+
     <TextView
         android:id="@+id/answer"
         android:layout_width="match_parent"
