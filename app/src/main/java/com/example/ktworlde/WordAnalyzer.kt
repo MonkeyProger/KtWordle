@@ -2,6 +2,7 @@ package com.example.ktworlde
 
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.util.*
 import kotlin.collections.HashSet
 import kotlin.math.log
 import kotlin.random.Random
@@ -9,11 +10,18 @@ import kotlin.random.Random
 class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     private val words: List<String> = InputStreamReader(inputStream).readLines()
     private val answers: List<String> = InputStreamReader(inputStream1).readLines()
-    private val answersSet: HashSet<String> = HashSet(answers)
-    private var matchSet: HashSet<String> = answersSet
+    private val answersSet: LinkedList<String> = LinkedList(answers)
+    private var matchSet: LinkedList<String> = answersSet
+    private val wordsMap = mutableMapOf<String,MutableMap<Char,Int>>()
     var key = "ответ"
     private var guess = IntArray(5)
     private var curWord = ""
+
+    init{
+        for (i in matchSet){
+            wordsMap[i]=createLetterMap(i)
+        }
+    }
 
     fun clearAnalyzer(){
         guess = IntArray(5)
@@ -97,24 +105,27 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     }
 
     // * Функция для фильтрации списка по конкретной к слову
-    private fun buildMatches(word: String, comb: IntArray): HashSet<String> {
-        val set = HashSet<String>() // Искомый отфильтрованный список
+    private fun buildMatches(word: String, comb: IntArray): LinkedList<String> {
+        val set = LinkedList<String>() // Искомый отфильтрованный список
         // * Map содержащий буквы, которые имеются, но не на месте, и буквы не содержащиеся в слове
         //   Если буква содержится в слове, но стоит не на месте, то contained[буква] += 1
         //   Если буква отсутствует в слове, то contained[буква] = 0
         val contained = mutableMapOf<Char,Int>()
+        val notContained = mutableMapOf<Char,Int>()
+        contained.putAll(wordsMap[word]!!)
+        notContained.putAll(contained)
         for (h in 0..4){
-            if (comb[h]==0 && !contained.containsKey(word[h]))
-                contained[word[h]] = 0
-            if (comb[h] == 1)
-                if (contained.containsKey(word[h])) contained[word[h]] = contained[word[h]]!! + 1
-                else contained[word[h]] = 1
+            when(comb[h]){
+                2 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                1 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                0 -> contained[word[h]] = contained[word[h]]!! - 1
+            }
         }
 
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
         for (i in matchSet) {
             if (i == word) continue
-            val letters = createLetterMap(i).toMutableMap()// см. функцию createLetterMap() ниже
+            val letters = wordsMap[i]// см. функцию createLetterMap() ниже
             var flag = true
 
             // Проход по текущему слову и проверка места буквы, т.е проверка значений 2 и 1
@@ -122,40 +133,58 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
             // ООТТО подходит | ОКТЕТ не подходит
             for (j in 0..4)
                 when (comb[j]){
-                    2 -> {
-                        if (i[j] != word[j]) {
-                            flag = false
-                            break
-                        } else letters[i[j]] = letters[i[j]]!! - 1}
-                    1 -> {
-                        if (i[j] == word[j]) {
-                            flag = false
-                            break
+                    2 -> if (i[j] != word[j]) {
+                        flag = false
+                        break
                         }
-                    }
-                    0 -> letters[word[j]] = letters[word[j]]!! - 1
+                    1 -> if (i[j] == word[j]) {
+                        flag = false
+                        break
+                        }
+                    0 -> if (i[j] == word[j]) {
+                        flag = false
+                        break
+                        }
                     }
             if (!flag) continue
 
-            // Проход по текущему слову и проверка наличия буквы, но не на своем месте, и проверка
-            // на отсутствие буквы, т.е проверка значений 0, 1
             for (j in contained) {
-                if (!flag) break
-                if (j.value == 0 && letters.containsKey(j.key) && letters[j.key] != 0) {
-                    flag = false
-                    break
-                }
-                // Если рассматриваемая буква есть в слове в нескольких экземплярах, проверяются
-                // все экземпляры
-                for (h in 1..j.value)
-                    if (letters.containsKey(j.key) && letters[j.key] != 0)
-                        letters[j.key] = letters[j.key]!! - 1
-                    else {
+                if (letters!!.containsKey(j.key)){
+                    if (j.value == 0){
                         flag = false
                         break
                     }
+                    val notC = notContained[j.key]!!
+                    val letter = letters[j.key]!!
+                    if (notC == 0 && letter >= j.value) continue else
+                        if (notC != 0 && (letter - j.value) < notC) continue else {
+                            flag = false
+                            break
+                        }
+                } else if (j.value > 0){
+                    flag = false
+                    break
+                }
             }
             if (!flag) continue
+            // Проход по текущему слову и проверка наличия буквы, но не на своем месте, и проверка
+            // на отсутствие буквы, т.е проверка значений 0, 1
+//            for (j in contained) {
+//                if (!flag) break
+//                if (j.value == 0 && letters.containsKey(j.key) && letters[j.key] != 0) {
+//                    flag = false
+//                    break
+//                }
+//                // Если рассматриваемая буква есть в слове в нескольких экземплярах, проверяются
+//                // все экземпляры
+//                for (h in 1..j.value)
+//                    if (letters.containsKey(j.key) && letters[j.key] != 0)
+//                        letters[j.key] = letters[j.key]!! - 1
+//                    else {
+//                        flag = false
+//                        break
+//                    }
+//            }
             set.add(i)
         }
         return set
@@ -164,48 +193,77 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     private fun buildPos(word: String, comb: IntArray): Double{
         var res = 0.0
         val contained = mutableMapOf<Char,Int>()
+        val notContained = mutableMapOf<Char,Int>()
+        contained.putAll(wordsMap[word]!!)
+        notContained.putAll(contained)
         for (h in 0..4){
-            if (comb[h]==0 && !contained.containsKey(word[h]))
-                contained[word[h]] = 0
-            if (comb[h] == 1)
-                if (contained.containsKey(word[h])) contained[word[h]] = contained[word[h]]!! + 1
-                else contained[word[h]] = 1
+            when(comb[h]){
+                2 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                1 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                0 -> contained[word[h]] = contained[word[h]]!! - 1
+            }
         }
 
+        // Проход по всем элементам списка и сравнение элемента на вероятное слово
         for (i in matchSet) {
-            val letters = createLetterMap(i).toMutableMap()
-            var flag = true
             if (i == word) continue
+            val letters = wordsMap[i]// см. функцию createLetterMap() ниже
+            var flag = true
+
+            // Проход по текущему слову и проверка места буквы, т.е проверка значений 2 и 1
+            // Пример: ОТЧЁТ имеет комбинацию ЗЖССЖ
+            // ООТТО подходит | ОКТЕТ не подходит
             for (j in 0..4)
                 when (comb[j]){
-                    2 -> {
-                        if (i[j] != word[j]) {
-                            flag = false
-                            break
-                        } else letters[i[j]] = letters[i[j]]!! - 1}
-                    1 -> {
-                        if (i[j] == word[j]) {
-                            flag = false
-                            break
-                        }
-                    }
-                }
-            if (!flag) continue
-            for (j in contained) {
-                if (!flag) break
-                if (j.value == 0 && letters.containsKey(j.key) && letters[j.key] != 0) {
-                    flag = false
-                    break
-                }
-                for (h in 1..j.value)
-                    if (letters.containsKey(j.key) && letters[j.key] != 0)
-                        letters[j.key] = letters[j.key]!! - 1
-                    else {
+                    2 -> if (i[j] != word[j]) {
                         flag = false
                         break
                     }
+                    1 -> if (i[j] == word[j]) {
+                        flag = false
+                        break
+                    }
+                    0 -> if (i[j] == word[j]) {
+                        flag = false
+                        break
+                    }
+                }
+            if (!flag) continue
+
+            for (j in contained) {
+                if (letters!!.containsKey(j.key)){
+                    if (j.value == 0){
+                        flag = false
+                        break
+                    }
+                    val notC = notContained[j.key]!!
+                    val letter = letters[j.key]!!
+                    if (notC == 0 && letter >= j.value) continue else
+                        if (notC != 0 && (letter - j.value) < notC) continue else {
+                            flag = false
+                            break
+                        }
+                } else if (j.value > 0){
+                    flag = false
+                    break
+                }
             }
-            if (flag) res++
+            if (!flag) continue
+//            for (j in contained) {
+//                if (!flag) break
+//                if (j.value == 0 && letters.containsKey(j.key) && letters[j.key] != 0) {
+//                    flag = false
+//                    break
+//                }
+//                for (h in 1..j.value)
+//                    if (letters.containsKey(j.key) && letters[j.key] != 0)
+//                        letters[j.key] = letters[j.key]!! - 1
+//                    else {
+//                        flag = false
+//                        break
+//                    }
+//            }
+            res++
         }
         return res
     }
@@ -248,7 +306,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     //              т - 1     у - 1
     //                        н - 1
     //                        ь - 1
-    private fun createLetterMap(word: String): Map<Char,Int>{
+    private fun createLetterMap(word: String): MutableMap<Char,Int>{
         val res = mutableMapOf<Char,Int>()
         for (i in word) {
             if (res.containsKey(i)) res[i] = res[i]!! + 1
