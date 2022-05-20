@@ -9,9 +9,17 @@ import org.junit.Assert.*
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class ExampleUnitTest: AbstractFunctionTest() {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun computingCombTest() {
+        // Проверка корректности вывода комбинации заданного слова при определенном ключевом слове
+        analyzeWordTest()
+    }
+
+    @Test
+    fun checkingWordTest(){
+        // Проверка того, подходит ли заданое слово введённому при определенной комбинации
+        validationTest()
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ktworlde.MainActivity">
+    tools:context="com.example.ktworlde.controller.MainActivity">
 
     <EditText
         android:id="@+id/editText1"
@@ -93,7 +93,7 @@
         android:minHeight="48dp"
         android:padding="5dp" />
 
-    <com.example.ktworlde.Textbar
+    <com.example.ktworlde.view.Textbar
         android:id="@+id/textbar1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -104,7 +104,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:gravity="center" />
-    <com.example.ktworlde.Textbar
+    <com.example.ktworlde.view.Textbar
         android:id="@+id/textbar2"
         android:gravity="center"
         android:layout_alignTop="@+id/editText1"
@@ -115,7 +115,7 @@
         android:layout_marginEnd="5dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
-    <com.example.ktworlde.Textbar
+    <com.example.ktworlde.view.Textbar
         android:id="@+id/textbar3"
         android:gravity="center"
         android:layout_alignTop="@+id/editText2"
@@ -127,7 +127,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
 
-    <com.example.ktworlde.Textbar
+    <com.example.ktworlde.view.Textbar
         android:id="@+id/textbar4"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -139,7 +139,7 @@
         android:layout_marginEnd="5dp"
         android:gravity="center" />
 
-    <com.example.ktworlde.Textbar
+    <com.example.ktworlde.view.Textbar
         android:id="@+id/textbar5"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -151,7 +151,7 @@
         android:layout_marginEnd="5dp"
         android:gravity="center" />
 
-    <com.example.ktworlde.Keyboard
+    <com.example.ktworlde.view.Keyboard
         android:id="@+id/keyboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -195,7 +195,7 @@
         android:textIsSelectable="false"
         android:textSize="20sp" />
 
-    <com.example.ktworlde.Topbar
+    <com.example.ktworlde.view.Topbar
         android:id="@+id/topbar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical" />
 
-    <com.example.ktworlde.Topbar
+    <com.example.ktworlde.view.Topbar
         android:id="@+id/topbar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
         android:layout_marginTop="48dp"
         android:orientation="vertical" />
 
-    <com.example.ktworlde.Topbar
+    <com.example.ktworlde.view.Topbar
         android:id="@+id/topbar3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
         android:layout_marginTop="50dp"
         android:orientation="vertical" />
 
-    <com.example.ktworlde.Topbar
+    <com.example.ktworlde.view.Topbar
         android:id="@+id/topbar4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
         android:layout_marginTop="48dp"
         android:orientation="vertical" />
 
-    <com.example.ktworlde.Topbar
+    <com.example.ktworlde.view.Topbar
         android:id="@+id/topbar5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

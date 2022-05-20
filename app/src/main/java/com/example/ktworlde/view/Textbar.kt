@@ -1,14 +1,13 @@
-package com.example.ktworlde
+package com.example.ktworlde.view
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
+import com.example.ktworlde.R
 
 class Textbar @JvmOverloads constructor(
     context: Context,

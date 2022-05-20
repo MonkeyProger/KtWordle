@@ -1,4 +1,4 @@
-package com.example.ktworlde
+package com.example.ktworlde.controller
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +10,11 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
+import com.example.ktworlde.view.Keyboard
+import com.example.ktworlde.R
+import com.example.ktworlde.view.Textbar
+import com.example.ktworlde.view.Topbar
+import com.example.ktworlde.model.WordAnalyzer
 import java.util.ArrayDeque
 
 class MainActivity : AppCompatActivity() {

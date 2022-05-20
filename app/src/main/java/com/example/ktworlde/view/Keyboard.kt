@@ -1,4 +1,4 @@
-package com.example.ktworlde
+package com.example.ktworlde.view
 
 import android.content.Context
 import android.text.TextUtils
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Button
 import android.widget.LinearLayout
+import com.example.ktworlde.R
 import java.util.*
 
 class Keyboard @JvmOverloads constructor(
