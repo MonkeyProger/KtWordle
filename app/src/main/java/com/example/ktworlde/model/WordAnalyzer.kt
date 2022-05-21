@@ -23,21 +23,21 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     private val words: List<String> = InputStreamReader(inputStream).readLines()
     private val answers: List<String> = InputStreamReader(inputStream1).readLines()
     private val answersSet: LinkedList<String> = LinkedList(answers)
-    private var matchSet: LinkedList<String> = answersSet
+    private var matchList: LinkedList<String> = answersSet
     public val wordsMap = mutableMapOf<String,MutableMap<Char,Int>>()
     var key = "ответ"
     private var guess = IntArray(5)
     private var curWord = ""
 
     init{
-        // Составляю
-        for (i in matchSet){
+        // Составляю для каждого слова Map, содержащий информацию о кол-ве букв в слове
+        for (i in words){
             wordsMap[i]=createLetterMap(i)
         }
     }
     fun clearAnalyzer(){
         guess = IntArray(5)
-        matchSet = answersSet
+        matchList = answersSet
         key = answers[Random.nextInt(answers.size)]
     }
     fun contains(word: String): Boolean = words.contains(word)
@@ -85,15 +85,15 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     fun analyzeEntropy(word: String): Array<Pair<String, Double>> {
         val top = Array(5){"" to 0.0}.toMutableList() // Конечный топ
 
-        matchSet = buildMatches(word,guess) // Вызов функции фильтрации списка (см. ниже)
+        matchList = buildMatches(word,guess) // Вызов функции фильтрации списка (см. ниже)
 
-        if (matchSet.size == 1) { // Если подходит одно слово сразу оно и выводится
-            top.add(0,matchSet.firstOrNull()!! to 100.0)
+        if (matchList.size == 1) { // Если подходит одно слово сразу оно и выводится
+            top.add(0,matchList.firstOrNull()!! to 100.0)
             top.removeAt(5)
         } else
         /* Проход по всем словам в отфильтрованном списке и составление энтропии для каждого,
            (функция getE() по слову получает энтропию см.ниже) */
-        for (i in matchSet){
+        for (i in matchList){
             val curE = getE(i)
             for (j in 0..4){
                 if (curE >= top[j].second){
@@ -111,7 +111,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     //   Вызывает функцию getE (см.ниже)
     fun analyzeFullEntropy(): Array<Pair<String, Double>>{
         val top = Array(5){"" to 0.0}.toMutableList()
-        for (i in matchSet){
+        for (i in matchList){
             val curE = getE(i)
             for (j in 0..4){
                 if (curE >= top[j].second){
@@ -138,7 +138,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
         val illegalVal = arrayOf(242,241,239,233,215,161)
         for (i in 0 until 243) {
             if (illegalVal.contains(i)) continue
-            val pos = buildPos(word, conv3(i)) / matchSet.size
+            val pos = buildPos(word, conv3(i)) / matchList.size
             if (pos != 0.0)
                 entropy += pos*(log(1/pos,2.0))
         }
@@ -162,7 +162,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
         buildContainers(comb,word,contained,notContained)
 
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
-        for (i in matchSet)
+        for (i in matchList)
             if (isValid(word,comb,contained,notContained,i)) set.add(i)
         return set
     }
@@ -180,7 +180,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
         notContained.putAll(contained)
         buildContainers(comb,word,contained,notContained)
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
-        for (i in matchSet)
+        for (i in matchList)
             if (isValid(word,comb,contained,notContained,i)) res++
         return res
     }
