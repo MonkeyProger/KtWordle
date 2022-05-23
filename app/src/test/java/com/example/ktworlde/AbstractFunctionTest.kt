@@ -7,9 +7,9 @@ import java.io.FileInputStream
 
 
 abstract class AbstractFunctionTest {
-    val words = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\singular.txt")
-    val probWords = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\res.txt")
-    val analyzer = WordAnalyzer(words,probWords)
+    private val words = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\singular.txt")
+    private val probWords = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\res.txt")
+    private val analyzer = WordAnalyzer(words,probWords)
 
     // Проверка корректности вывода комбинации заданного слова при определенном ключевом слове
     fun analyzeWordTest(){
@@ -31,6 +31,7 @@ abstract class AbstractFunctionTest {
         assertArrayEquals(intArrayOf(1,0,2,2,0),analyzer.analyzeWord("АВВВА"))
         assertArrayEquals(intArrayOf(1,1,2,2,2),analyzer.analyzeWord("АОВВО"))
         assertArrayEquals(intArrayOf(1,1,0,2,2),analyzer.analyzeWord("АООВО"))
+        analyzer.clearAnalyzer()
     }
 
     // Проверка того, подходит ли заданое слово введённому при определенной комбинации
@@ -114,5 +115,36 @@ abstract class AbstractFunctionTest {
         notCont.putAll(cont)
         analyzer.buildContainers(comb,word,cont,notCont)
         assertTrue(analyzer.isValid(word,comb,cont,notCont,i))
+        analyzer.clearAnalyzer()
+    }
+
+    // Тест времени выполнения функции buildPos() для выбранного слова word
+    fun buildPosTimeTest(word: String){
+        val comb = intArrayOf(0,0,0,0,0)
+        val startTime = System.currentTimeMillis()
+        analyzer.buildPos(word,comb)
+        val buildPosRuntime = System.currentTimeMillis() - startTime
+        println("buildPos('$word',[0,0,0,0,0]) total time taken: $buildPosRuntime ms")
+        analyzer.clearAnalyzer()
+    }
+
+    // Тест времени выполнения функции getE() для
+    // выбранного слова-догадки word
+    fun getEntropyTimeTest(word: String){
+        val startTime = System.currentTimeMillis()
+        val value = analyzer.getE(word)
+        val getEntropyRuntime = System.currentTimeMillis() - startTime
+        println("getE('$word') = $value. Total time taken: $getEntropyRuntime ms")
+        analyzer.clearAnalyzer()
+    }
+
+    // Тест времени выполнения функции analyzeFullEntropy(), т.е получения списка лучших слов ДО
+    // момента введения первого слова
+    fun analyzeFullEntrTimeTest(){
+        val startTime = System.currentTimeMillis()
+        analyzer.analyzeFullEntropy()
+        val analyzeFullRuntime = System.currentTimeMillis() - startTime
+        println("analyzeFullEntropy() total time taken: $analyzeFullRuntime ms")
+        analyzer.clearAnalyzer()
     }
 }

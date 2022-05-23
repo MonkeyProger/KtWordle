@@ -9,8 +9,10 @@ import kotlin.random.Random
     * Класс в котором реализованы функции сравнения слов, их фильтрации, нахождения энтропии,
       составления списка 5 слов, имеющих наибольшую энтропию.
     * Порядок вызова функций при вводе игроком очередного слова:
-            1                  1.1            2          2.1
-      analyzeEntropy() -> buildMatches() -> getE() -> buildPos()
+           0                  1                  1.1            2          2.1
+      analyzeWord() ||| analyzeEntropy() -> buildMatches() -> getE() -> buildPos()
+
+      0) Сравнивая введенное слово с ответом, получает комбинацию догадки.
 
       1) Фильтрует список слов по введенному слову и его комбинации, составляет топ 5 слов
          1.1) Выполняет фильтрацию списка
@@ -133,7 +135,7 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
           представленны в виде 10ных чисел, каждое из которых переводится функцией conv3(см. ниже)
         * Комбинации соответственно: 22222 22221 22212 22122 21222 12222
     */
-    private fun getE(word: String): Double{
+    public fun getE(word: String): Double{
         var entropy = 0.0
         val illegalVal = arrayOf(242,241,239,233,215,161)
         for (i in 0 until 243) {
@@ -148,8 +150,9 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
 
     // * Функция для фильтрации списка по конкретной комбинации к слову
     //   Для сравнения очередного слова с введенным используется isValid() см. ниже
+    // * Возвращает отфильтрованный по вероятным словам LinkedList
     private fun buildMatches(word: String, comb: IntArray): LinkedList<String> {
-        val set = LinkedList<String>() // Искомый отфильтрованный список
+        val list = LinkedList<String>() // Искомый отфильтрованный список
         /*
         contained содержит информацию о кол-ве имеющихся букв в слове в сравнении с ключевым словом (Зелёные, Желтые)
         notContained содержит информацию о буквах, имеющихся в текущем, но не в ключевом слове (Серые)
@@ -163,8 +166,8 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
 
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
         for (i in matchList)
-            if (isValid(word,comb,contained,notContained,i)) set.add(i)
-        return set
+            if (isValid(word,comb,contained,notContained,i)) list.add(i)
+        return list
     }
 
 
@@ -172,7 +175,8 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
     //   Для сравнения очередного слова с введенным используется isValid() см. ниже
     //   Требуется для нахождения вероятности в функции getE()
     //   Аналогичен buildMatches
-    private fun buildPos(word: String, comb: IntArray): Double{
+    // * Возвращает число подошедших слов
+    public fun buildPos(word: String, comb: IntArray): Double{
         var res = 0.0
         val contained = mutableMapOf<Char,Int>()
         val notContained = mutableMapOf<Char,Int>()
@@ -187,8 +191,8 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
 
 
     /*
-        Функция реализует сравнение текущего слова i с введенным предположенным словом word
-        Возвращает true, если слово подходит
+        Функция реализует сравнение текущего слова i с введенным предположенным словом word.
+        Возвращает true, если слово подходит.
     */
     public fun isValid(
         word: String, comb: IntArray,
