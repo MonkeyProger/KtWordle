@@ -162,7 +162,14 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
         val notContained = mutableMapOf<Char,Int>()
         contained.putAll(wordsMap[word]!!)
         notContained.putAll(contained)
-        buildContainers(comb,word,contained,notContained)
+        for (h in 0..4){
+            when(comb[h]){
+                2 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                1 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                0 -> contained[word[h]] = contained[word[h]]!! - 1
+            }
+        }
+        //buildContainers(comb,word,contained,notContained)
 
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
         for (i in matchList)
@@ -182,7 +189,14 @@ class WordAnalyzer(inputStream: InputStream, inputStream1: InputStream) {
         val notContained = mutableMapOf<Char,Int>()
         contained.putAll(wordsMap[word]!!)
         notContained.putAll(contained)
-        buildContainers(comb,word,contained,notContained)
+        //buildContainers(comb,word,contained,notContained)
+        for (h in 0..4){
+            when(comb[h]){
+                2 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                1 -> notContained[word[h]] = notContained[word[h]]!! - 1
+                0 -> contained[word[h]] = contained[word[h]]!! - 1
+            }
+        }
         // Проход по всем элементам списка и сравнение элемента на вероятное слово
         for (i in matchList)
             if (isValid(word,comb,contained,notContained,i)) res++
