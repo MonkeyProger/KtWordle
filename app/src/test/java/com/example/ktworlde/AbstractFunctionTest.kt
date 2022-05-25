@@ -3,13 +3,33 @@ import com.example.ktworlde.model.WordAnalyzer
 import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertFalse
+import java.io.File
 import java.io.FileInputStream
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.util.*
 
 
 abstract class AbstractFunctionTest {
-    private val words = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\singular.txt")
-    private val probWords = FileInputStream("D:\\KtWorlde\\app\\src\\main\\assets\\res.txt")
-    private val analyzer = WordAnalyzer(words,probWords)
+    private val words = File("D:\\KtWorlde\\app\\src\\main\\assets\\singular.txt")
+    private val probWords = File("D:\\KtWorlde\\app\\src\\main\\assets\\res.txt")
+    private val analyzer = WordAnalyzer(words.inputStream(),probWords.inputStream())
+    private val wordsList: List<String> = words.readLines()
+    private val answersList: List<String> = probWords.readLines()
+
+    // Получение случайного слова из всех возможных words за исключением except
+    fun getRandomGuessExcept(except: String): String{
+        var res = except
+        while (res == except) res = wordsList.random()
+        return res
+    }
+
+    // Получение случайного слова из всех возможных words за исключением except
+    fun getRandomAnswerExcept(except: String): String{
+        var res = except
+        while (res == except) res = answersList.random()
+        return res
+    }
 
     // Проверка корректности вывода комбинации заданного слова при определенном ключевом слове
     fun analyzeWordTest(){
@@ -146,5 +166,19 @@ abstract class AbstractFunctionTest {
         val analyzeFullRuntime = System.currentTimeMillis() - startTime
         println("analyzeFullEntropy() total time taken: $analyzeFullRuntime ms")
         analyzer.clearAnalyzer()
+    }
+
+    // Тест количества итераций до получения ответа key по заданному слову word
+    fun iterationsOnGuessTest(key: String, word: String): Int{
+        analyzer.key = key
+        var iterations = 0
+        var curWord = word
+        while (curWord!=key){
+            analyzer.analyzeWord(curWord)
+            curWord = analyzer.analyzeEntropy(curWord)[0].first
+            iterations++
+        }
+        analyzer.clearAnalyzer()
+        return iterations
     }
 }
