@@ -11,8 +11,8 @@ import java.util.*
 
 
 abstract class AbstractFunctionTest {
-    private val words = File("D:\\KtWorlde\\app\\src\\main\\assets\\singular.txt")
-    private val probWords = File("D:\\KtWorlde\\app\\src\\main\\assets\\res.txt")
+    private val words = File("./src/main/assets/singular.txt")
+    private val probWords = File("./src/main/assets/res.txt")
     private val analyzer = WordAnalyzer(words.inputStream(),probWords.inputStream())
     private val wordsList: List<String> = words.readLines()
     private val answersList: List<String> = probWords.readLines()
